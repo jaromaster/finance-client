@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@types/react": "^18.0.14",
+    "create-react-app": "^5.0.1",
+    "npx": "^10.2.2"
+  }
+}

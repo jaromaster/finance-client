@@ -1,0 +1,22 @@
+/* style whole div containing button and content */
+.Collapse {
+    width: 100%;
+}
+
+
+/* style button */
+.Collapse-Button {
+    border: 1px solid lightblue;
+    background-color: white;
+    width: 50%;
+    height: 50px;
+    font-size: 15px;
+    text-align: left;
+}
+
+
+/* Hover */
+.Collapse-Button:hover {
+    border-bottom: 5px solid rgb(201, 241, 248); /* underline selected tab */
+    cursor: pointer;
+}

@@ -1,0 +1,18 @@
+/* style whole div */
+.Signup {
+    margin-top: 10px;
+}
+
+
+/* style table containing form input field */
+.Signup-Form-Table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+
+/* style submit button */
+.Signup-Submit-Button {
+    float: right;
+}

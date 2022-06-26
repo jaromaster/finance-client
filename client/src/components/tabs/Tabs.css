@@ -1,0 +1,31 @@
+/* Tabs (div containing all tabs: Tablinks, Account-Tablink) */
+.Tabs {
+    height: 50px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* All types of links in Tabs */
+.Tablink, .Account-Tablink {
+    font-size: 15px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    height: 100%;
+}
+
+/* Tablinks are aligned left */
+.Tablink {
+    margin-right: 10px; 
+    float: left;
+}
+
+/* Account-Tablink (only one) is aligned right */
+.Account-Tablink {
+    float: right;
+}
+
+/* Hover */
+.Tablink:hover, .Account-Tablink:hover {
+    border-bottom: 5px solid rgb(201, 241, 248); /* underline selected tab */
+}

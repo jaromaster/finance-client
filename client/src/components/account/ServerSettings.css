@@ -1,0 +1,13 @@
+
+/* style table in ServerSettings */
+.ServerSettings-Table {
+    margin: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+}
+
+/* style submit button in table */
+.ServerSettings-Submit-Button {
+    float: right;
+}

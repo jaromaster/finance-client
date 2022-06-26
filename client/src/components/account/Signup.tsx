@@ -5,6 +5,7 @@ import "./Signup.css";
  * Signup is used for signing in new users
  */
 const Signup = () => {
+    // server (ip, method, fetch)
 
     // on submit
     const handle_submit = (e: MouseEvent)=>{

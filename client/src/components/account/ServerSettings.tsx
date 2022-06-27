@@ -3,40 +3,46 @@ import "./ServerSettings.css";
 
 
 /**
- * ServerSettingsProps is used for typing in props
- */
-interface ServerSettingsProps {
-    handle_server_change: Function
-    server_ip: string
-    server_port: number
-}
-
-
-/**
  * ServerSettings is used to configure the server that provides the rest api
  */
-const ServerSettings = ({ handle_server_change, server_ip, server_port }: ServerSettingsProps) => {
-    // store hostname and port, changed by text input field (onChange)
-    let ip: string = server_ip; // default "localhost"
-    let port: number = server_port; // default 80
+const ServerSettings = () => {
+    // default values (user input)
+    const DEFAULT_IP: string = "127.0.0.1";
+    const DEFAULT_PORT: number = 80;
 
     // valid range of port
     const MAX_PORT: number = 65535;
     const MIN_PORT: number = 0;
 
     // regex for checking ip
-    const IP_REGEX: string = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$";
+    const IP_REGEX: string = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$";
+    
 
+    // HANDLE TARGET SERVER IP AND PORT
+    // get server ip and port from localStorage
+    const localStorage_server = localStorage.getItem("server");
+
+    // store hostname and port, changed by text input field (onChange)
+    let ip: string = DEFAULT_IP; 
+    let port: number = DEFAULT_PORT;
+
+    // check if server already in local storage, if yes overwrite
+    if (localStorage_server !== null && localStorage_server?.split(":").length === 2) {
+        ip = localStorage_server.split(":")[0]; // first part 
+        port = parseInt(localStorage_server.split(":")[1]); // second part
+    }
+
+    
     // handle submit
     const handle_submit = (e: MouseEvent, server_ip: string, server_port: number ) => {
         e.preventDefault();
         
-
-        // check if ip valid (syntax)
+        // check if ip valid (syntax) + allow "localhost"
         if(!new RegExp(IP_REGEX).test(server_ip) && server_ip !== "localhost") {
             alert("IP is invalid (syntax)");
             return;
             // TODO: error message + color input field
+
         }
 
 
@@ -49,9 +55,8 @@ const ServerSettings = ({ handle_server_change, server_ip, server_port }: Server
         }
 
 
-
         const combined = server_ip + ":" + server_port; // e.g. 192.168.1.1:80
-        handle_server_change(combined); // pass up to App to use globally
+        localStorage.setItem("server", combined); // store in browser storage
     }
 
     // only allow numeric input for port
@@ -71,14 +76,14 @@ const ServerSettings = ({ handle_server_change, server_ip, server_port }: Server
                 <table className="ServerSettings-Table">
                     <tr>
                         <th><label>Server IP</label></th>
-                        <th><input id="ip_input" type="text" onChange={(e) => ip = e.target.value} defaultValue={server_ip} required></input></th>
+                        <th><input id="ip_input" type="text" onChange={(e) => ip = e.target.value} defaultValue={ip} required></input></th>
                     </tr>
                     <tr>
                         <th><label>Server Port</label></th>
                         <th><input type="number" min={MIN_PORT} max={MAX_PORT} 
                         onChange={(e) => port = parseInt(e.target.value)} 
                         onKeyPress={handle_port_input} 
-                        defaultValue={server_port} 
+                        defaultValue={port} 
                         onPaste={e=>e.preventDefault()}
                         required></input></th>
                     </tr>

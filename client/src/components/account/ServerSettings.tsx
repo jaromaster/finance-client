@@ -22,11 +22,11 @@ const ServerSettings = () => {
     // get server ip and port from localStorage
     const localStorage_server = localStorage.getItem("server");
 
-    // store hostname and port, changed by text input field (onChange)
+    // store ip and port, changed by text input field (onChange)
     let ip: string = DEFAULT_IP; 
     let port: number = DEFAULT_PORT;
 
-    // check if server already in local storage, if yes overwrite
+    // check if server already in local storage, then overwrite
     if (localStorage_server !== null && localStorage_server?.split(":").length === 2) {
         ip = localStorage_server.split(":")[0]; // first part 
         port = parseInt(localStorage_server.split(":")[1]); // second part
@@ -36,13 +36,11 @@ const ServerSettings = () => {
     // handle submit
     const handle_submit = (e: MouseEvent, server_ip: string, server_port: number ) => {
         e.preventDefault();
-        
+
         // check if ip valid (syntax) + allow "localhost"
         if(!new RegExp(IP_REGEX).test(server_ip) && server_ip !== "localhost") {
             alert("IP is invalid (syntax)");
             return;
-            // TODO: error message + color input field
-
         }
 
 
@@ -50,8 +48,6 @@ const ServerSettings = () => {
         if (server_port > MAX_PORT || server_port < MIN_PORT) {
             alert("Server Port needs to be between " + MAX_PORT + " and " + MIN_PORT + " (inc.)");
             return;
-
-            // TODO: error message + color input field
         }
 
 
@@ -80,12 +76,14 @@ const ServerSettings = () => {
                     </tr>
                     <tr>
                         <th><label>Server Port</label></th>
-                        <th><input type="number" min={MIN_PORT} max={MAX_PORT} 
-                        onChange={(e) => port = parseInt(e.target.value)} 
-                        onKeyPress={handle_port_input} 
-                        defaultValue={port} 
-                        onPaste={e=>e.preventDefault()}
-                        required></input></th>
+                        <th>
+                            <input type="number" id="ip_input" min={MIN_PORT} max={MAX_PORT} 
+                            onChange={(e) => port = parseInt(e.target.value)} 
+                            onKeyPress={handle_port_input} 
+                            defaultValue={port} 
+                            onPaste={e=>e.preventDefault()}
+                            required></input>
+                        </th>
                     </tr>
                     <tr>
                         <th></th>

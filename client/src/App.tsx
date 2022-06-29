@@ -27,6 +27,7 @@ function App() {
         <Routes>
           {/* See:  https://www.w3schools.com/react/react_router.asp */}
           <Route path="/" element={<Welcome/>}/> {/* some welcome page*/}
+          <Route path="/welcome" element={<Welcome/>}/> {/* some welcome page*/}
           <Route path="/addpayments" /> {/* add new payments */}
           <Route path="/delpayments" /> {/* delete payments */}
           <Route path="/payments" /> {/* get and filter payments */}

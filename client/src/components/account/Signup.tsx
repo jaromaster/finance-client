@@ -99,10 +99,10 @@ const Signup = () => {
         })
         .then(data => {
             if (data === "" ) return; // error, already handled above
-            localStorage.setItem("token", data); // success, store jwt in localStorage
+            sessionStorage.setItem("token", data); // success, store jwt in sessionStorage
 
-            // TODO: show user that sign up was successful
-            localStorage.setItem("username", username); // store username to display later
+            // store username to display later 
+            sessionStorage.setItem("username", username); 
 
             // go to welcome page
             window.location.href = "/welcome";

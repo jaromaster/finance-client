@@ -5,7 +5,7 @@ import React from 'react';
  */
 const Welcome = () => {
     // get username of logged in / signed in user
-    let username = localStorage.getItem("username");
+    let username = sessionStorage.getItem("username");
 
 
     // user not signed in
@@ -13,7 +13,7 @@ const Welcome = () => {
         return (
             <div className="Welcome">
                 <h1>Welcome to Finance Manager!</h1>
-                <h3>Please go to <a href="/account">Account</a> and sign in or log in!</h3>
+                <h3>Please go to <a href="/account">Account</a> to sign up or log in!</h3>
             </div>
         )
     }

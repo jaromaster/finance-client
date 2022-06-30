@@ -16,3 +16,10 @@
 .Signup-Submit-Button {
     float: right;
 }
+
+
+/* style text field where errors are shown */
+.Signup-Error-Text-Field {
+    text-align: center;
+    width: min-content;
+}

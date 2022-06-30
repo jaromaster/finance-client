@@ -1,4 +1,4 @@
-import React, { MouseEvent } from "react";
+import React, { MouseEvent, useState } from "react";
 import "./Signup.css";
 
 /**
@@ -11,21 +11,51 @@ interface SignupRequestData {
 
 
 /**
+ * fetch_timeout acts like fetch, but takes timeout in millisecs as parameter
+ * 
+ * @param url 
+ * @param options 
+ * @param ms
+ * @returns response
+ */
+async function fetch_timeout(url: string, options: RequestInit, ms: number): Promise<Response> {
+    const controller = new AbortController();
+    const id = setTimeout(()=> controller.abort(), ms);
+
+    // fetch
+    const response: Response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+    });
+
+    return response;
+}
+
+
+/**
  * Signup is used for signing in new users
  */
 const Signup = () => {
     // constants
     const IP_PORT_NOT_SET_MSG: string = "No server IP and port set! Please go to 'Server Settings' to set them there!"; // error message
     const PASSWORDS_NOT_MATCH_MSG: string = "Passwords do not match!"; // error message
-    const FIELD_EMPTY: string = "Username, Password, and repeated Password must not be empty!"; // error message
+    const FIELD_EMPTY_MSG: string = "Username, Password, and repeated Password must not be empty!"; // error message
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const METHOD: string = "POST"; // used method
     const METHOD_PATH: string = "/signup"; // route used for rest api: e.g. 192.168.1.1:80/signup 
+    const TIMEOUT_MS: number = 3000; // milliseconds
 
 
     // get server information (stored in localStorage)
     const server: string | null = localStorage.getItem("server");
+
+    // get username if user logged in to fill in form
+    const session_storage_username: string | null  = sessionStorage.getItem("username");
+    let username_logged_in: string = "";
+    if (session_storage_username !== null) {
+        username_logged_in = session_storage_username;
+    }
 
     // server ip and port 
     let server_ip: string = UNSET_IP;
@@ -36,6 +66,8 @@ const Signup = () => {
     let password: string = "";
     let password_check: string = "";
 
+    // error message is displayed on every error
+    const [error_message, set_error_message] = useState("");
 
     // check if server not null (in localStorage), then extract values from localStorage
     if (server !== null) {
@@ -56,7 +88,7 @@ const Signup = () => {
 
         // field is empty
         if (username === "" || password === "" || password_check === "") {
-            alert(FIELD_EMPTY);
+            alert(FIELD_EMPTY_MSG);
             return;
         }
 
@@ -75,21 +107,21 @@ const Signup = () => {
         // compile url
         const url: string = `http://${server_ip}:${server_port}${METHOD_PATH}`; // server_ip:server_port/METHOD_PATH
 
-        // send data to server
-        fetch(url, {
+        // send data to server + time out if not reachable
+        fetch_timeout(url, {
             method: METHOD,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        })
+        }, TIMEOUT_MS)
         .then(res => {
             // Internal Server Error (e.g. user already exists)
             if (res.status === 500) {
                 // get text of response
                 res.text().then((txt) => {
-                    alert("Error when signing up: " + txt); // handle error messages
+                    set_error_message("Error when signing up: " + txt); // handle error messages
                 })
                 return "";
             }
@@ -108,7 +140,11 @@ const Signup = () => {
             window.location.href = "/welcome";
 
         })
-        .catch(err => alert("Error: " + err));
+        .catch(err => {
+            // handle error
+            const error: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
+            set_error_message(error);
+        });
     }
 
 
@@ -118,7 +154,7 @@ const Signup = () => {
                 <table className="Signup-Form-Table">
                     <tr>
                         <th><label>Username</label></th>
-                        <th><input type="text" onChange={e => username = e.target.value} required></input></th>
+                        <th><input type="text" onChange={e => username = e.target.value} defaultValue={username_logged_in} required></input></th>
                     </tr>
                     <tr>
                         <th><label>Password</label></th>
@@ -131,6 +167,9 @@ const Signup = () => {
                     <tr>
                         <th></th>
                         <th><button type="submit" className="Signup-Submit-Button" onClick={(e)=>handle_submit(e)}>Sign up</button></th>
+                    </tr>
+                    <tr>
+                        <th colSpan={2} className="Signup-Error-Text-Field">{error_message}</th>
                     </tr>
                 </table>
             </form>

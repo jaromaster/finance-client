@@ -1,0 +1,23 @@
+/* style Login div */
+.Login {
+    margin-top: 10px;
+}
+
+
+/* style table in form */
+.Login-Form-Table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+/* style submit button */
+.Login-Submit-Button {
+    float: right;
+}
+
+/* style text field where errors are shown */
+.Login-Error-Text-Field {
+    text-align: center;
+    width: min-content;
+}

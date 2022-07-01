@@ -1,4 +1,5 @@
 import React, { MouseEvent, useState } from "react";
+import { fetch_timeout } from "../../helper_funcs/helper_funcs";
 import "./Signup.css";
 
 /**
@@ -7,28 +8,6 @@ import "./Signup.css";
 interface SignupRequestData {
     username: string,
     password: string
-}
-
-
-/**
- * fetch_timeout acts like fetch, but takes timeout in millisecs as parameter
- * 
- * @param url 
- * @param options 
- * @param ms
- * @returns response
- */
-async function fetch_timeout(url: string, options: RequestInit, ms: number): Promise<Response> {
-    const controller = new AbortController();
-    const id = setTimeout(()=> controller.abort(), ms);
-
-    // fetch
-    const response: Response = await fetch(url, {
-        ...options,
-        signal: controller.signal
-    });
-
-    return response;
 }
 
 
@@ -62,9 +41,9 @@ const Signup = () => {
     let server_port: number = UNSET_PORT;
 
     // user input
-    let username: string = "";
-    let password: string = "";
-    let password_check: string = "";
+    const [username, set_username] = useState(username_logged_in);
+    const [password, set_password] = useState("");
+    const [password_check, set_password_check] = useState("");
 
     // error message is displayed on every error
     const [error_message, set_error_message] = useState("");
@@ -110,10 +89,6 @@ const Signup = () => {
         // send data to server + time out if not reachable
         fetch_timeout(url, {
             method: METHOD,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(data)
         }, TIMEOUT_MS)
         .then(res => {
@@ -154,15 +129,15 @@ const Signup = () => {
                 <table className="Signup-Form-Table">
                     <tr>
                         <th><label>Username</label></th>
-                        <th><input type="text" onChange={e => username = e.target.value} defaultValue={username_logged_in} required></input></th>
+                        <th><input type="text" onChange={e => set_username(e.target.value)} defaultValue={username_logged_in} required></input></th>
                     </tr>
                     <tr>
                         <th><label>Password</label></th>
-                        <th><input type="password" onChange={e => password = e.target.value} required></input></th>
+                        <th><input type="password" onChange={e => set_password(e.target.value)} required></input></th>
                     </tr>
                     <tr>
                         <th><label>Repeat Password</label></th>
-                        <th><input type="password" onChange={e => password_check = e.target.value} required></input></th>
+                        <th><input type="password" onChange={e => set_password_check(e.target.value)} required></input></th>
                     </tr>
                     <tr>
                         <th></th>

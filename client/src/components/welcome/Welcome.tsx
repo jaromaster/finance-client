@@ -22,7 +22,7 @@ const Welcome = () => {
     return (
         <div className="Welcome">
             <h1>{username}, welcome back to Finance Manager!</h1>
-            <h3>Go to <a href="/help">Help</a> for more information about using this software</h3>
+            <h3>Go to <a href="/help">Help</a> for more information on how to use this software</h3>
         </div>
     )
 }

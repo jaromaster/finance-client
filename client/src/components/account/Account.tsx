@@ -1,6 +1,7 @@
 import React from "react";
 import Collapse from "./Collapse";
 import Login from "./Login";
+import Logout from "./Logout";
 import ServerSettings from "./ServerSettings";
 import Signup from "./Signup";
 
@@ -30,15 +31,24 @@ const Account = () => {
                 <ServerSettings />
             </Collapse>
 
-            {/* handle sign up */}
-            <Collapse title="Sign up"> 
-                <Signup />
-            </Collapse>
+            {/* handle sign up, only shown when logged out */}
+            {username.length === 0 &&
+                <Collapse title="Sign up"> 
+                    <Signup />
+                </Collapse>
+            }
 
             {/* handle login */}
             <Collapse title="Login">
                 <Login />
             </Collapse>
+
+            {/* handle logout, only shown when logged in */}
+            {username.length > 0 &&
+                <Collapse title="Logout">
+                <   Logout />
+                </Collapse>
+            }
 
             {/* handle user deletion */}
 

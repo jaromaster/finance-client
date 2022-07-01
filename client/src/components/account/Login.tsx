@@ -21,6 +21,7 @@ const Login = () => {
     const INVALID_LOGIN_MSG: string = "Username or password incorrect!" // error message
     const USERNAME_EMPTY_MSG: string = "Username must not be empty!"; // error message
     const PASSWD_EMPTY_MSG: string = "Password must not be empty!"; // error message
+    const UNKNOWN_ERROR_MSG: string = "Some server-side error occurred, please try again!"; // error message
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PATH: string = "login";
@@ -100,9 +101,7 @@ const Login = () => {
             }
             // other error e.g. Internal Server Error
             else if (res.status !== 200) {
-                // get res.text() as it contains error message
-                // set_error_message and return ""
-                set_error_message("Generic Error Message");
+                set_error_message(UNKNOWN_ERROR_MSG);
                 return "";
             }
 

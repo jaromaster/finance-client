@@ -6,6 +6,7 @@ import './App.css';
 import Tabs from './components/tabs/Tabs';
 import Welcome from './components/welcome/Welcome';
 import Account from './components/account/Account';
+import AddPayments from './components/addpayments/AddPayments';
 
 
 
@@ -28,7 +29,7 @@ function App() {
           <Route path="/" element={<Welcome/>}/> {/* some welcome page */}
           <Route path="/welcome" element={<Welcome/>}/> {/* some welcome page */}
           <Route path="/help" /> {/* help page */}
-          <Route path="/addpayments" /> {/* add new payments */}
+          <Route path="/addpayments" element={<AddPayments />}/> {/* add new payments */}
           <Route path="/delpayments" /> {/* delete payments */}
           <Route path="/payments" /> {/* get and filter payments */}
           <Route path="/account" element={<Account />}/> {/* signup, login, delete user (account settings) */}

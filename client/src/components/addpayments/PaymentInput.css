@@ -1,0 +1,37 @@
+/* style table */
+.Payment-Input-Table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+
+/* style input fields */
+.Payment-Input-Field  {
+    width: 95%;
+}
+
+
+/* style select */
+select.Payment-Input-Field {
+    width: 99.5%;
+}
+
+
+/* style textareas */
+textarea.Payment-Input-Field {
+    resize: vertical;
+}
+
+
+/* style submit button */
+.Payment-Input-Button {
+    float: right;
+}
+
+
+/* style error text field */
+.Payment-Input-Error-Text-Field {
+    text-align: center;
+    width: min-content;
+}

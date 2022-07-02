@@ -7,7 +7,7 @@ import Signup from "./Signup";
 
 
 /**
- * Account is used for: sign up, login, deletion of user
+ * Account is used for: sign up, login/logout, deletion of user (contains all important account settings + server settings)
  */
 const Account = () => {
     // get username from sessionStorage
@@ -17,19 +17,17 @@ const Account = () => {
         username = username_session_storage;
     }
 
+    // if user logged in: "Switch Account", else "Login"
+    const login_switch_acount: string =  username.length === 0 ? "Login" : "Switch Account";
+
     return (
         <div className="Account">
             <h1>Account</h1>
+
             {/* inform if logged in */}
             {username.length > 0 &&
                 <h3>Logged in as {username}</h3>
             }
-            
-
-            {/* server settings */}
-            <Collapse title="Server Settings">
-                <ServerSettings />
-            </Collapse>
 
             {/* handle sign up, only shown when logged out */}
             {username.length === 0 &&
@@ -38,19 +36,24 @@ const Account = () => {
                 </Collapse>
             }
 
-            {/* handle login */}
-            <Collapse title="Login">
+            {/* handle login / switch account (only if logged in) */}
+            <Collapse title={login_switch_acount}>
                 <Login />
             </Collapse>
 
             {/* handle logout, only shown when logged in */}
             {username.length > 0 &&
                 <Collapse title="Logout">
-                <   Logout />
+                    <Logout />
                 </Collapse>
             }
 
-            {/* handle user deletion */}
+            {/* server settings */}
+            <Collapse title="Server Settings">
+                <ServerSettings />
+            </Collapse>
+
+            {/* handle user deletion, only shown when logged in */}
 
 
         </div>

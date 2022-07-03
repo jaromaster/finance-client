@@ -1,4 +1,5 @@
 import React from "react";
+import { PleaseLogin } from "../../helper_funcs/helper";
 import "./AddPayments.css";
 import PaymentInput from "./PaymentInput";
 
@@ -16,11 +17,7 @@ const AddPayments = () => {
 
     // not logged in
     if (username.length === 0) {
-        return (
-            <div>
-                <h3>Please go to <a href="/account">Account</a> to log in</h3>
-            </div>
-        )
+        return <PleaseLogin />
     }
 
 

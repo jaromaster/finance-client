@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from "react";
-import { fetch_timeout } from "../../helper_funcs/helper_funcs";
+import { fetch_timeout } from "../../helper_funcs/helper";
 import "./PaymentInput.css";
 
 
@@ -70,7 +70,7 @@ const PaymentInput = () => {
     const [text, set_text] = useState("");
         
     // error message that is displayed in its own text field
-    const [error_message, set_error_message] = useState("Some generic error message that is displayed on every error in this component");
+    const [error_message, set_error_message] = useState("");
 
     // handle submit
     const handle_submit = (e: MouseEvent) => {

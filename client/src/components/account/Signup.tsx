@@ -1,5 +1,5 @@
 import React, { MouseEvent, useState } from "react";
-import { fetch_timeout } from "../../helper_funcs/helper_funcs";
+import { fetch_timeout } from "../../helper_funcs/helper";
 import "./Signup.css";
 
 /**

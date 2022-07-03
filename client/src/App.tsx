@@ -7,6 +7,7 @@ import Tabs from './components/tabs/Tabs';
 import Welcome from './components/welcome/Welcome';
 import Account from './components/account/Account';
 import AddPayments from './components/addpayments/AddPayments';
+import Payments from './components/payments/Payments';
 
 
 
@@ -31,7 +32,7 @@ function App() {
           <Route path="/help" /> {/* help page */}
           <Route path="/addpayments" element={<AddPayments />}/> {/* add new payments */}
           <Route path="/delpayments" /> {/* delete payments */}
-          <Route path="/payments" /> {/* get and filter payments */}
+          <Route path="/payments" element={<Payments />} /> {/* get and filter payments */}
           <Route path="/account" element={<Account />}/> {/* signup, login, delete user (account settings) */}
 
         </Routes>

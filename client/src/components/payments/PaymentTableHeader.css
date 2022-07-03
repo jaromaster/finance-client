@@ -1,0 +1,6 @@
+/* style th */
+th.PaymentTableHeader {
+    border: 1px solid lightblue;
+    padding-left: 8px;
+    padding-right: 8px;
+}

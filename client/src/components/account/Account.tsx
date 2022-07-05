@@ -1,5 +1,6 @@
 import React from "react";
 import Collapse from "./Collapse";
+import DeleteUser from "./DeleteUser";
 import Login from "./Login";
 import Logout from "./Logout";
 import ServerSettings from "./ServerSettings";
@@ -54,7 +55,11 @@ const Account = () => {
             </Collapse>
 
             {/* handle user deletion, only shown when logged in */}
-
+            {username.length > 0 &&
+                <Collapse title="Delete User">
+                    <DeleteUser />
+                </Collapse>
+            }
 
         </div>
     )

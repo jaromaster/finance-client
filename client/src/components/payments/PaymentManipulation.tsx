@@ -3,7 +3,7 @@ import { PaymentInterface, PleaseCheckServer, PleaseLogin } from "../../helper_f
 import SinglePayment from "./SinglePayment";
 import "./PaymentManipulation.css";
 import PaymentTableHeader from "./PaymentTableHeader";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 
 /**
@@ -23,32 +23,26 @@ const get_payments = async (url: string, token: string): Promise<PaymentInterfac
             timeout: TIMEOUT_MS
         });
 
+        // ok
+        const json_data = res.data;
+        let payments: PaymentInterface[] = [];
+        for (let i = 0; i < json_data.length; i++) {
+            const payment = json_data[i] as PaymentInterface;
+            
+            payments.push(payment);
+        }
+        return payments;
+
+    } catch (error: any) {
+        const res = error.response as AxiosResponse;
+
         // token invalid -> auth failed
         if (res.status === 403) {
             return "Auth error, token seems to be invalid";
         }
 
-        // ok -> return as json
-        if (res.status === 200) {
-            const json_data = res.data;
-
-            let payments: PaymentInterface[] = [];
-            for (let i = 0; i < json_data.length; i++) {
-                const payment = json_data[i] as PaymentInterface;
-                
-                payments.push(payment);
-            }
-
-            return payments;
-        }
-
-    // exception
-    } catch (error) {
         return "Network error, server not found";
     }
-    
-    // not ok
-    return "Some error occurred, please try again later";
 }
 
 

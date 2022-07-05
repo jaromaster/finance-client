@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import React, { MouseEvent, useState } from "react";
 import "./Signup.css";
 
@@ -91,28 +91,27 @@ const Signup = () => {
                 timeout: TIMEOUT_MS
             });
 
+            // ok
+            const token = res.data; // get token
+            sessionStorage.setItem("token", token); // success, store jwt in sessionStorage
+            sessionStorage.setItem("username", username); // store username to display later
+
+            // go to welcome page
+            window.location.href = "/welcome";
+        }
+        catch(error: any) {
+            const res = error.response as AxiosResponse; // get response from error
+
             // Internal Server Error (e.g. user already exists)
             if (res.status === 500) {
                 // get text of response (error message from server)
                 set_error_message(res.data);
             }
-            // ok
             else {
-                const token = res.data; // get token
-
-                sessionStorage.setItem("token", token); // success, store jwt in sessionStorage
-
-                // store username to display later 
-                sessionStorage.setItem("username", username); 
-
-                // go to welcome page
-                window.location.href = "/welcome";
+                // handle other errors
+                const error_msg: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
+                set_error_message(error_msg);
             }
-        }
-        catch(error) {
-            // handle error
-            const error_msg: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
-            set_error_message(error_msg);
         }
     }
 

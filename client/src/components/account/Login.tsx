@@ -91,6 +91,16 @@ const Login = () => {
                 timeout: TIMEOUT_MS
             });
 
+            const token = res.data; // get token 
+            sessionStorage.setItem("token", token); // store jwt for auth
+            sessionStorage.setItem("username", username); // store username
+
+            // go to welcome page
+            window.location.href = "/welcome";
+        }
+        catch (error: any) {
+            const res = error.response as AxiosResponse; // get response
+
             // error 403 Forbidden
             if (res.status === 403) {
                 set_error_message(INVALID_LOGIN_MSG);
@@ -99,20 +109,6 @@ const Login = () => {
             else if (res.status !== 200) {
                 set_error_message(UNKNOWN_ERROR_MSG);
             }
-            // ok
-            else {
-                const token = res.data; // get token 
-
-                sessionStorage.setItem("token", token); // store jwt for auth
-                sessionStorage.setItem("username", username); // store username
-
-                // go to welcome page
-                window.location.href = "/welcome";
-            }
-        }
-        catch (error) {
-            const error_msg: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
-            set_error_message(error_msg);
         }
     }
 

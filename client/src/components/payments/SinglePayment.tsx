@@ -25,7 +25,6 @@ const SinglePayment = (props: SinglePaymentProps) => {
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PATH: string = "delpayments";
-    const METHOD: string = "DELETE";
     const PROTOCOL: string = "http";
     const TIMEOUT_MS: number = 3000; // millisecs
 
@@ -71,7 +70,6 @@ const SinglePayment = (props: SinglePaymentProps) => {
 
     // delete payment from payments
     const handle_delete = async (e: MouseEvent) => {
-        console.log("deleting payment with id " + payment.id);
 
         // check token
         if (token === null) {
@@ -90,31 +88,29 @@ const SinglePayment = (props: SinglePaymentProps) => {
 
         try {
             // send delete request
-            const res: AxiosResponse<any, any> = await axios.delete(url, {
+            await axios.delete(url, {
                 data: JSON.stringify(body),
                 timeout: TIMEOUT_MS
             });
-            
-            // token invalid (auth failed)
-            if (res.status === 403) {
-                alert(await res.data);
-            }
-
-            // server error
-            else if (res.status === 500) {
-                alert(await res.data);
-            }
-
-            // other error
-            else if (res.status !== 200) {
-                alert("Some other error.");
-            }
 
             // call delete_hook from PaymentManipulation to inform about delete
             props.delete_hook(payment.id); // all SinglePayment components are re-rendered
 
-        } catch (error) {
-            alert(error);
+        } catch (error: any) {
+            const res = error.response as AxiosResponse; // get response from error
+
+            // token invalid (auth failed)
+            if (res.status === 403) {
+                alert(await res.data);
+            }
+            // server error
+            else if (res.status === 500) {
+                alert(await res.data);
+            }
+            // other error
+            else{
+                alert("Some other error.");
+            }
         }
     }
 

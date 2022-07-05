@@ -119,28 +119,30 @@ const PaymentInput = () => {
             token: token
         }
 
-        // send data
-        const res: AxiosResponse<any, any> = await axios.post(url, body, {
-            timeout: TIMEOUT_MS
-        });
+        try {
+            // send data
+            const res: AxiosResponse<any, any> = await axios.post(url, body, {
+                timeout: TIMEOUT_MS
+            });
 
-        // invalid token
-        if (res.status === 403) {
-            set_error_message(AUTH_FAILED_MSG);
-        }
-        // server error
-        else if (res.status === 500) {
+            // ok
             set_error_message(res.data);
-        }
-        // unknown error
-        else if (res.status !== 200) {
-            // show some generic error message
-            set_error_message(UNKNOWN_ERROR_MSG);
-        }
-        // CAUTION: this case returns success-messages
-        else{
-            // ok, 200
-            set_error_message(res.data);
+        } catch (error: any) {
+            const res = error.response as AxiosResponse; // get response from error
+
+            // invalid token
+            if (res.status === 403) {
+                set_error_message(AUTH_FAILED_MSG);
+            }
+            // server error
+            else if (res.status === 500) {
+                set_error_message(res.data); // get server error
+            }
+            // unknown error
+            else {
+                // show some generic error message
+                set_error_message(UNKNOWN_ERROR_MSG);
+            }
         }
     }
 

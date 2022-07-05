@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetch_timeout, PaymentInterface, PleaseCheckServer, PleaseLogin } from "../../helper_funcs/helper";
+import { PaymentInterface, PleaseCheckServer, PleaseLogin } from "../../helper_funcs/helper";
 import SinglePayment from "./SinglePayment";
 import "./PaymentManipulation.css";
 import PaymentTableHeader from "./PaymentTableHeader";
+import axios from "axios";
 
 
 /**
@@ -18,20 +19,18 @@ const get_payments = async (url: string, token: string): Promise<PaymentInterfac
 
     // fetch data from server
     try {
-        const res = await fetch_timeout(url, {
-            method: "POST",
-            body: JSON.stringify(body),
-        }, TIMEOUT_MS);
-
+        const res = await axios.post(url, body,{
+            timeout: TIMEOUT_MS
+        });
 
         // token invalid -> auth failed
         if (res.status === 403) {
-            return "Auth error, token invalid";
+            return "Auth error, token seems to be invalid";
         }
 
-        // ok, return as json
+        // ok -> return as json
         if (res.status === 200) {
-            const json_data = await res.json();
+            const json_data = res.data;
 
             let payments: PaymentInterface[] = [];
             for (let i = 0; i < json_data.length; i++) {
@@ -148,7 +147,7 @@ const PaymentManipulation = () => {
                         {/* table header (column names) */}
                         <PaymentTableHeader />
                         
-                        {/* inform user, that there are no payments yet */}
+                        {/* inform user that there are no payments yet */}
                         <tr>
                             <th colSpan={5} style={{paddingLeft: "10px", paddingRight: "10px"}}>
                                 <p>No payments yet. Go to <a href="/addpayments">Add Payments</a> to add some</p>

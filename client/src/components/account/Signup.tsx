@@ -1,5 +1,5 @@
+import axios from "axios";
 import React, { MouseEvent, useState } from "react";
-import { fetch_timeout } from "../../helper_funcs/helper";
 import "./Signup.css";
 
 /**
@@ -21,8 +21,7 @@ const Signup = () => {
     const FIELD_EMPTY_MSG: string = "Username, Password, and repeated Password must not be empty!"; // error message
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
-    const METHOD: string = "POST"; // used method
-    const METHOD_PATH: string = "/signup"; // route used for rest api: e.g. 192.168.1.1:80/signup 
+    const PATH: string = "signup"; // route used for rest api: e.g. 192.168.1.1:80/signup 
     const TIMEOUT_MS: number = 3000; // milliseconds
 
 
@@ -56,7 +55,7 @@ const Signup = () => {
     }
 
     // on submit
-    const handle_submit = (e: MouseEvent)=>{
+    const handle_submit = async (e: MouseEvent)=>{
         e.preventDefault();
 
         // invalid ip (was not set)
@@ -84,42 +83,37 @@ const Signup = () => {
         }
 
         // compile url
-        const url: string = `http://${server_ip}:${server_port}${METHOD_PATH}`; // server_ip:server_port/METHOD_PATH
+        const url: string = `http://${server_ip}:${server_port}/${PATH}`; // server_ip:server_port/METHOD_PATH
 
-        // send data to server + time out if not reachable
-        fetch_timeout(url, {
-            method: METHOD,
-            body: JSON.stringify(data)
-        }, TIMEOUT_MS)
-        .then(res => {
+        try{
+            // send username and password to sign up, on success: get token for auth
+            const res = await axios.post(url, data, {
+                timeout: TIMEOUT_MS
+            });
+
             // Internal Server Error (e.g. user already exists)
             if (res.status === 500) {
-                // get text of response
-                res.text().then((txt) => {
-                    set_error_message("Error when signing up: " + txt); // handle error messages
-                })
-                return "";
+                // get text of response (error message from server)
+                set_error_message(res.data);
             }
-
             // ok
-            return res.text();
-        })
-        .then(data => {
-            if (data === "" ) return; // error, already handled above
-            sessionStorage.setItem("token", data); // success, store jwt in sessionStorage
+            else {
+                const token = res.data; // get token
 
-            // store username to display later 
-            sessionStorage.setItem("username", username); 
+                sessionStorage.setItem("token", token); // success, store jwt in sessionStorage
 
-            // go to welcome page
-            window.location.href = "/welcome";
+                // store username to display later 
+                sessionStorage.setItem("username", username); 
 
-        })
-        .catch(err => {
+                // go to welcome page
+                window.location.href = "/welcome";
+            }
+        }
+        catch(error) {
             // handle error
-            const error: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
-            set_error_message(error);
-        });
+            const error_msg: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
+            set_error_message(error_msg);
+        }
     }
 
 

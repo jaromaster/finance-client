@@ -1,5 +1,5 @@
+import axios, { AxiosResponse } from "axios";
 import React, { MouseEvent, useState } from "react";
-import { fetch_timeout } from "../../helper_funcs/helper";
 import "./Login.css";
 
 
@@ -25,7 +25,6 @@ const Login = () => {
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PATH: string = "login";
-    const METHOD: string = "POST";
     const PROTOCOL: string = "http";
     const TIMEOUT_MS: number = 3000;
 
@@ -58,7 +57,7 @@ const Login = () => {
     }
 
     // submit action (submit button clicked)
-    const handle_submit = (e: MouseEvent) => {
+    const handle_submit = async (e: MouseEvent) => {
         e.preventDefault();
 
         // invalid ip (was not set)
@@ -86,42 +85,35 @@ const Login = () => {
         // build url
         const url: string = `${PROTOCOL}://${server_ip}:${server_port}/${PATH}`;
 
+        try {
+            // send username and password to server, get token in return
+            const res: AxiosResponse<any, any> = await axios.post(url, data, {
+                timeout: TIMEOUT_MS
+            });
 
-        // send username and password to server
-        fetch_timeout(url, {
-            method: METHOD,
-            body: JSON.stringify(data)
-        }, TIMEOUT_MS)
-        // get jwt as response
-        .then(res => {
             // error 403 Forbidden
             if (res.status === 403) {
                 set_error_message(INVALID_LOGIN_MSG);
-                return "";
             }
             // other error e.g. Internal Server Error
             else if (res.status !== 200) {
                 set_error_message(UNKNOWN_ERROR_MSG);
-                return "";
             }
+            // ok
+            else {
+                const token = res.data; // get token 
 
-            // ok 
-            return res.text()
-        })
-        .then(data => {
-            // store jwt in sessionStorage
-            if (data.length > 0) {
-                sessionStorage.setItem("token", data); // store jwt for auth
+                sessionStorage.setItem("token", token); // store jwt for auth
                 sessionStorage.setItem("username", username); // store username
 
                 // go to welcome page
                 window.location.href = "/welcome";
             }
-        })
-        .catch(err=>{
-            const error: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
-            set_error_message(error)
-        })
+        }
+        catch (error) {
+            const error_msg: string = `Connection to server ${server_ip}:${server_port} was aborted. Please make sure that IP and port are correct`;
+            set_error_message(error_msg);
+        }
     }
 
 

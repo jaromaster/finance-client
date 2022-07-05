@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import React, { MouseEvent } from "react";
-import { fetch_timeout, format_date, PaymentInterface, PleaseCheckServer } from "../../helper_funcs/helper";
+import { format_date, PaymentInterface, PleaseCheckServer } from "../../helper_funcs/helper";
 import "./SinglePayment.css";
 
 /**

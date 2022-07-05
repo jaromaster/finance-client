@@ -1,5 +1,5 @@
+import axios, { AxiosResponse } from "axios";
 import React, { MouseEvent, useState } from "react";
-import { fetch_timeout } from "../../helper_funcs/helper";
 import "./PaymentInput.css";
 
 
@@ -23,6 +23,7 @@ interface AddPaymentRequest {
     text: string | null
 }
 
+
 /**
  * PaymentInput allows users to input data to add a new payment
  * 
@@ -39,7 +40,6 @@ const PaymentInput = () => {
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PROTOCOL: string = "http";
-    const METHOD: string = "POST";
     const PATH: string = "addpayments";
 
     // categories the user can select
@@ -73,7 +73,7 @@ const PaymentInput = () => {
     const [error_message, set_error_message] = useState("");
 
     // handle submit
-    const handle_submit = (e: MouseEvent) => {
+    const handle_submit = async (e: MouseEvent) => {
         e.preventDefault();
 
         // check date
@@ -94,7 +94,6 @@ const PaymentInput = () => {
             return;
         }
 
-
         // if text is empty: null, else: text
         let insert_text: string | null = null;
         if (text.length > 0) {
@@ -114,7 +113,6 @@ const PaymentInput = () => {
         // build url
         const url: string = `${PROTOCOL}://${server_ip}:${server_port}/${PATH}`;
 
-
         // json body containing payments and jwt (token)
         const body: RequestBody = {
             payments: [data],
@@ -122,41 +120,28 @@ const PaymentInput = () => {
         }
 
         // send data
-        fetch_timeout(url, {
-            method: METHOD,
-            body: JSON.stringify(body)
-        }, TIMEOUT_MS)
-        .then(res => {
+        const res: AxiosResponse<any, any> = await axios.post(url, body, {
+            timeout: TIMEOUT_MS
+        });
 
-            // invalid token
-            if (res.status === 403) {
-                set_error_message(AUTH_FAILED_MSG);
-                return "";
-            }
-
-            // server error
-            if (res.status === 500) {
-                // return res.text() to get error message
-                return res.text();
-            }
-
-            // unknown error
-            if (res.status !== 200) {
-                // show some generic error message
-                set_error_message(UNKNOWN_ERROR_MSG);
-                return "";
-            }
-
-
-            // CAUTION: this case returns success-messages
-            // ok
-            return res.text(); 
-        })
-        .then(txt => {
-            if (txt === "") return;
-            set_error_message(txt);
-        })
-        .catch(err => alert(err));
+        // invalid token
+        if (res.status === 403) {
+            set_error_message(AUTH_FAILED_MSG);
+        }
+        // server error
+        else if (res.status === 500) {
+            set_error_message(res.data);
+        }
+        // unknown error
+        else if (res.status !== 200) {
+            // show some generic error message
+            set_error_message(UNKNOWN_ERROR_MSG);
+        }
+        // CAUTION: this case returns success-messages
+        else{
+            // ok, 200
+            set_error_message(res.data);
+        }
     }
 
     return (

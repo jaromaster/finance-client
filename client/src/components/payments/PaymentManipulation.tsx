@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetch_timeout, PaymentInterface, PleaseCheckServer, PleaseLogin } from "../../helper_funcs/helper";
 import SinglePayment from "./SinglePayment";
 import "./PaymentManipulation.css";
@@ -10,9 +10,9 @@ import PaymentTableHeader from "./PaymentTableHeader";
  * 
  * @param url 
  * @param token 
- * @returns Promise<payments> (json)
+ * @returns Promise<payments> (json) or Promise<string> error message
  */
-const get_payments = async (url: string, token: string): Promise<PaymentInterface[] | null>  => {
+const get_payments = async (url: string, token: string): Promise<PaymentInterface[] | string>  => {
     const body = {token: token};
     const TIMEOUT_MS: number = 2000; 
 
@@ -23,6 +23,11 @@ const get_payments = async (url: string, token: string): Promise<PaymentInterfac
             body: JSON.stringify(body),
         }, TIMEOUT_MS);
 
+
+        // token invalid -> auth failed
+        if (res.status === 403) {
+            return "Auth error, token invalid";
+        }
 
         // ok, return as json
         if (res.status === 200) {
@@ -40,18 +45,18 @@ const get_payments = async (url: string, token: string): Promise<PaymentInterfac
 
     // exception
     } catch (error) {
-        return null;
+        return "Network error, server not found";
     }
     
     // not ok
-    return null;
+    return "Some error occurred, please try again later";
 }
+
 
 /**
  * PaymentManipulation allows operations on payments: get, delete (add might be added in future)
  */
 const PaymentManipulation = () => {
-    const UNKNOWN_ERROR: string = "Some network error occurred"; // error message
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PROTOCOL: string = "http";
@@ -67,11 +72,6 @@ const PaymentManipulation = () => {
     // get token
     const token: string | null = sessionStorage.getItem("token");
 
-    // token does not exist
-    if (token === null) {
-        return <PleaseLogin/>
-    }
-
     // server ip and port 
     let server_ip: string = UNSET_IP;
     let server_port: number = UNSET_PORT;
@@ -86,21 +86,30 @@ const PaymentManipulation = () => {
         server_port = parseInt(server.split(":")[1]); // second part
     }
 
-    // build url
-    const url: string = `${PROTOCOL}://${server_ip}:${server_port}/${PATH}`;
+    // run only once
+    useEffect(()=>{
 
-    // on load: get payments of user
-    get_payments(url, token as string)
-    .then(val => {
-        // some error, inform user
-        if (val === null) {
-            set_error_message(UNKNOWN_ERROR);
-            return;
-        }
+        // build url
+        const url: string = `${PROTOCOL}://${server_ip}:${server_port}/${PATH}`;
 
-        set_payments(val as PaymentInterface[]); // update payments
-    })
+        // on load: get payments of user
+        get_payments(url, token as string)
+        .then(val => {
+            // some error, inform user
+            if (typeof val === "string") {
+                set_error_message(val);
+                return;
+            }
 
+            set_payments(val as PaymentInterface[]); // update payments
+        })
+
+    }, [server_ip, server_port, token])
+
+    // token does not exist
+    if (token === null) {
+        return <PleaseLogin/>
+    }
 
     // something went wrong, display error message
     if(error_message.length > 0) {
@@ -108,6 +117,45 @@ const PaymentManipulation = () => {
             <div>
                 <h3>{error_message}</h3>
                 <PleaseCheckServer />
+            </div>
+        )
+    }
+
+    // called when payment is deleted by SinglePayment (user clicks)
+    // re-render all payments
+    const delete_hook = (payment_id: number) => {
+        let payments_copy = [...payments];
+        for (let i = 0; i < payments_copy.length; i++) {
+            const element = payments_copy[i];
+            
+            // remove payment with id
+            if (element.id === payment_id) {
+                payments_copy.splice(i, 1);
+            }
+        }
+
+        // update payments
+        set_payments(payments_copy);
+    }
+
+
+    // no payments yet
+    if (payments.length === 0) {
+        return (
+            <div>
+                <table className="Payment-Man-Table">
+                    <tbody>
+                        {/* table header (column names) */}
+                        <PaymentTableHeader />
+                        
+                        {/* inform user, that there are no payments yet */}
+                        <tr>
+                            <th colSpan={5} style={{paddingLeft: "10px", paddingRight: "10px"}}>
+                                <p>No payments yet. Go to <a href="/addpayments">Add Payments</a> to add some</p>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -122,7 +170,7 @@ const PaymentManipulation = () => {
                     
                     {/* display each payment as SinglePayment */}
                     {
-                        payments.map((val, idx) => <SinglePayment key={idx} payment={val} />)
+                        payments.map((val, idx) => <SinglePayment key={idx} payment={val} delete_hook={delete_hook}/>)
                     }
                 </tbody>
             </table>

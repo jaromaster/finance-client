@@ -58,3 +58,17 @@ export interface PaymentInterface {
     payment_time: string
     payment_text: string
 }
+
+
+/**
+ * format_date takes a date and formats it
+ * 
+ * @param date 
+ * @returns formatted date
+ */
+export const format_date = (date: string): string => {
+    let new_date: string = "";
+    new_date = date.split("T")[0]; // remove last part
+
+    return new_date;
+}

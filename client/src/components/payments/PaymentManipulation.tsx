@@ -1,50 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { PaymentInterface, PleaseCheckServer, PleaseLogin } from "../../helper_funcs/helper";
+import { get_payments, PaymentInterface, PleaseCheckServer, PleaseLogin } from "../../helper_funcs/helper";
 import SinglePayment from "./SinglePayment";
 import "./PaymentManipulation.css";
 import PaymentTableHeader from "./PaymentTableHeader";
-import axios, { AxiosResponse } from "axios";
 import PaymentAddRow from "./PaymentAddRow";
+import AnalyzeAmount from "../payment_analysis/AnalyzeAmount";
 
 
 /**
- * get_payments fetches all payments of user from server
- * 
- * @param url 
- * @param token 
- * @returns Promise<payments> (json) or Promise<string> error message
+ * StatsElements defines valid names for statistic elements (JSX)
  */
-const get_payments = async (url: string, token: string): Promise<PaymentInterface[] | string>  => {
-    const body = {token: token};
-    const TIMEOUT_MS: number = 2000; 
-
-    // fetch data from server
-    try {
-        const res = await axios.post(url, body,{
-            timeout: TIMEOUT_MS
-        });
-
-        // ok
-        const json_data = res.data;
-        let payments: PaymentInterface[] = [];
-        for (let i = 0; i < json_data.length; i++) {
-            const payment = json_data[i] as PaymentInterface;
-            
-            payments.push(payment);
-        }
-        return payments;
-
-    } catch (error: any) {
-        const res = error.response as AxiosResponse;
-
-        // token invalid -> auth failed
-        if (res.status === 403) {
-            return "Auth error, token seems to be invalid";
-        }
-
-        return "Network error, server not found";
-    }
+enum StatsElements {
+    Amount,
+    Date,
+    Time,
+    Category,
+    Text,
+    None
 }
+
 
 
 /**
@@ -79,6 +53,18 @@ const PaymentManipulation = () => {
         server_ip = server.split(":")[0]; // first part
         server_port = parseInt(server.split(":")[1]); // second part
     }
+
+
+    // decide which stats element to display using state
+    const [stats_element, set_stats_element] = useState(StatsElements.None);
+
+    // build statistic elements (analysis)
+
+
+    // create amount stats
+    console.log(payments.map((val)=>val.payment_amount))
+    let amount_stats: JSX.Element = <AnalyzeAmount payments={payments} />;
+
 
     // run only once
     useEffect(()=>{
@@ -142,13 +128,24 @@ const PaymentManipulation = () => {
         )
     }
 
+    
+    // called from PaymentTableHeader when amount is clicked
+    const handle_click_amount = () => {
+        if (stats_element === StatsElements.Amount){
+            set_stats_element(StatsElements.None);
+        }
+        else{
+            set_stats_element(StatsElements.Amount);
+        }
+    }
+
 
     return (
         <div>
             <table className="Payment-Man-Table">
                 <tbody>
                     {/* table header (column names) */}
-                    <PaymentTableHeader />
+                    <PaymentTableHeader handle_click_amount={handle_click_amount}/>
                     
                     {/* display each payment as SinglePayment */}
                     {
@@ -159,6 +156,13 @@ const PaymentManipulation = () => {
                     <PaymentAddRow />
                 </tbody>
             </table>
+
+            {/* show payment analytics */}
+            {/* check if amount */}
+            {stats_element === StatsElements.Amount ? amount_stats : null}
+
+            {/* TODO check other columns, then display stats */}
+
         </div>
     )
 }

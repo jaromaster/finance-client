@@ -7,7 +7,6 @@ import './Tabs.css';
 const Tabs = () => {
     return (
         <div className="Tabs">
-            <button className="Tablink" onClick={(event) => window.location.href = "/addpayments"}>Add Payment</button>
             <button className="Tablink" onClick={(event) => window.location.href = "/payments"}>My Payments</button>
             <button className="Account-Tablink" onClick={(event) => window.location.href = "/account"}>Account</button>
         </div>

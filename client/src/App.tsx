@@ -31,7 +31,6 @@ function App() {
           <Route path="/welcome" element={<Welcome/>}/> {/* some welcome page */}
           <Route path="/help" /> {/* help page */}
           <Route path="/addpayments" element={<AddPayments />}/> {/* add new payments */}
-          <Route path="/delpayments" /> {/* delete payments */}
           <Route path="/payments" element={<Payments />} /> {/* get and filter payments */}
           <Route path="/account" element={<Account />}/> {/* signup, login, delete user (account settings) */}
 

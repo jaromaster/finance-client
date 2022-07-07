@@ -186,6 +186,7 @@ const PaymentInput = () => {
                     </tbody>
                 </table>
             </form>
+            <h3>View your <a href="/payments">Payments</a></h3>
         </div>
     )
 }

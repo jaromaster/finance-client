@@ -4,6 +4,7 @@ import SinglePayment from "./SinglePayment";
 import "./PaymentManipulation.css";
 import PaymentTableHeader from "./PaymentTableHeader";
 import axios, { AxiosResponse } from "axios";
+import PaymentAddRow from "./PaymentAddRow";
 
 
 /**
@@ -136,19 +137,7 @@ const PaymentManipulation = () => {
     if (payments.length === 0) {
         return (
             <div>
-                <table className="Payment-Man-Table">
-                    <tbody>
-                        {/* table header (column names) */}
-                        <PaymentTableHeader />
-                        
-                        {/* inform user that there are no payments yet */}
-                        <tr>
-                            <th colSpan={5} style={{paddingLeft: "10px", paddingRight: "10px"}}>
-                                <p>No payments yet. Go to <a href="/addpayments">Add Payments</a> to add some</p>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3>No payments yet. Go to <a href="/addpayments">Add Payments</a> to add some</h3>
             </div>
         )
     }
@@ -165,6 +154,9 @@ const PaymentManipulation = () => {
                     {
                         payments.map((val, idx) => <SinglePayment key={idx} payment={val} delete_hook={delete_hook}/>)
                     }
+
+                    {/* add payment */}
+                    <PaymentAddRow />
                 </tbody>
             </table>
         </div>

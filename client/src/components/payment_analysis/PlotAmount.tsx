@@ -70,7 +70,7 @@ const PlotAmount = (props: PropsInterface) => {
     
     
     return (
-        <div style={{marginLeft: "auto", marginRight: "auto", width: "40%"}}>
+        <div style={{marginLeft: "auto", marginRight: "auto"}}>
             {/* combined chart */}
             <Chart type="line" data={plotting_data}></Chart>
         </div>

@@ -42,36 +42,41 @@ const AnalyzeAmount = (props: PropsInterface) => {
     return (
         <div>
             <h3>Amount Stats</h3>
-            <table style={{marginLeft: "auto", marginRight: "auto"}}>
-                <tbody>
-                    <tr>
-                        <th>Sum:</th>
-                        <td>{sum}</td>
-                    </tr>
-                    <tr>
-                        <th>Min:</th>
-                        <td>{min}</td>
-                    </tr>
-                    <tr>
-                        <th>Max:</th>
-                        <td>{max}</td>
-                    </tr>
-                    <tr>
-                        <th>Median:</th>
-                        <td>{median}</td>
-                    </tr>
-                    <tr>
-                        <th>Mean:</th>
-                        <td>{mean_rounded}</td>
-                    </tr>
-                    <tr>
-                        <th>Range:</th>
-                        <td>{range}</td>
-                    </tr>
-                </tbody>
-            </table>
-            {/* plot amount */}
-            <PlotAmount amounts={amounts} dates={props.payments.map(p => format_date(p.payment_date))}/>
+            {/* content div with 2 columns (table and chart) */}
+            <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Sum:</th>
+                            <td>{sum}</td>
+                        </tr>
+                        <tr>
+                            <th>Min:</th>
+                            <td>{min}</td>
+                        </tr>
+                        <tr>
+                            <th>Max:</th>
+                            <td>{max}</td>
+                        </tr>
+                        <tr>
+                            <th>Median:</th>
+                            <td>{median}</td>
+                        </tr>
+                        <tr>
+                            <th>Mean:</th>
+                            <td>{mean_rounded}</td>
+                        </tr>
+                        <tr>
+                            <th>Range:</th>
+                            <td>{range}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {/* plot amount */}
+                <div style={{flexBasis: "800px"}}>
+                    <PlotAmount amounts={amounts} dates={props.payments.map(p => format_date(p.payment_date))}/>
+                </div>
+            </div>
         </div>
     )
 }

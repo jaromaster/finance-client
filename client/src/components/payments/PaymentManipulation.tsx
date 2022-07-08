@@ -62,7 +62,6 @@ const PaymentManipulation = () => {
 
 
     // create amount stats
-    console.log(payments.map((val)=>val.payment_amount))
     let amount_stats: JSX.Element = <AnalyzeAmount payments={payments} />;
 
 
@@ -143,6 +142,13 @@ const PaymentManipulation = () => {
     return (
         <div>
             <table className="Payment-Man-Table">
+                <colgroup>
+                    <col className="Payment-Man-Column"></col>
+                    <col className="Payment-Man-Column"></col>
+                    <col className="Payment-Man-Column"></col>
+                    <col className="Payment-Man-Column"></col>
+                    <col className="Payment-Man-Column"></col>
+                </colgroup>
                 <tbody>
                     {/* table header (column names) */}
                     <PaymentTableHeader handle_click_amount={handle_click_amount}/>

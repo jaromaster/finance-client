@@ -153,7 +153,7 @@ const PaymentInput = () => {
                     <tbody>
                         <tr>
                             <th><label>Amount</label></th>
-                            <td><input type="number" className="Payment-Input-Field" onChange={e => set_amount(parseInt(e.target.value))} defaultValue={0}></input></td>
+                            <td><input type="number" className="Payment-Input-Field" onChange={e => set_amount(parseFloat(e.target.value))} defaultValue={0} step={0.01}></input></td>
                         </tr>
                         <tr>
                             <th><label>Date</label></th>

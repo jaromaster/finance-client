@@ -1,6 +1,6 @@
 import React from "react";
-import { format_date, PaymentInterface } from "../../helper_funcs/helper";
-import PlotDate from "./PlotDate";
+import { PaymentInterface } from "../../helper_funcs/helper";
+import PlotTime from "./PlotTime";
 
 
 /**
@@ -36,12 +36,12 @@ const create_count_map = (list: string[]): Map<string, number> => {
 
 
 /**
- * remove_dup_dates removes duplicate dates from array
+ * remove_dup_times removes duplicate times from array
  * 
  * @param arr 
  * @returns array (unique elements)
  */
-const remove_dup_dates = (arr: string[]): string[] => {
+const remove_dup_times = (arr: string[]): string[] => {
     var unique: string[] = [];
     arr.forEach(element => {
         if (!unique.includes(element)) {
@@ -53,17 +53,16 @@ const remove_dup_dates = (arr: string[]): string[] => {
 
 
 /**
- * AnalyzeDate displays date stats
+ * AnalyzeTime displays time stats
  */
-const AnalyzeDate = (props: PropsInterface) => {
-    const dates_raw: string[] = props.payments.map(p => format_date(p.payment_date));
-    const dates_unique: string[] = remove_dup_dates(dates_raw); // unique
-    
+const AnalyzeTime = (props: PropsInterface) => {
+    const times: string[] = props.payments.map(p => p.payment_time); // get times
+    const times_unique: string[] = remove_dup_times(times); // remove duplicates
+    const sorted_times: string[] = [...times_unique].sort((a, b) => a.localeCompare(b)); // sort by time
 
     // get mode
-    // count each date and store in map
-    const count_map = create_count_map(dates_raw);
-    const counts: number[] = dates_unique.map(date => count_map.get(date) as number) // get only counts
+    // count each time and store in map
+    const count_map = create_count_map(times);
 
 
     // find max count in map -> mode
@@ -77,39 +76,41 @@ const AnalyzeDate = (props: PropsInterface) => {
         }
     })
 
-    // get first date (oldest)
-    const first: string = dates_unique[0];
+
+    // get first time (oldest)
+    const first: string = sorted_times[0];
 
     // get last date (newest)
-    const last: string = dates_unique[dates_unique.length - 1];
+    const last: string = sorted_times[sorted_times.length - 1];
+
 
     return (
         <div>
-            <h2>Date Stats</h2>
+            <h2>Time Stats</h2>
             <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <table>
                     <tbody>
                         <tr>
                             <th>Mode:</th>
-                            <td>{mode}</td>
+                            <th>{mode}</th>
                         </tr>
                         <tr>
                             <th>First:</th>
-                            <td>{first}</td>
+                            <th>{first}</th>
                         </tr>
                         <tr>
                             <th>Last:</th>
-                            <td>{last}</td>
+                            <th>{last}</th>
                         </tr>
                     </tbody>
                 </table>
                 <div style={{flexBasis: "800px"}}>
                     {/* plot */}
-                    <PlotDate dates={dates_unique} counts={counts}/>
+                    <PlotTime times={times}/>
                 </div>
             </div>
         </div>
     )
 }
 
-export default AnalyzeDate;
+export default AnalyzeTime;

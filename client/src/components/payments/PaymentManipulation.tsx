@@ -6,6 +6,7 @@ import PaymentTableHeader from "./PaymentTableHeader";
 import PaymentAddRow from "./PaymentAddRow";
 import AnalyzeAmount from "../payment_analysis/AnalyzeAmount";
 import AnalyzeDate from "../payment_analysis/AnalyzeDate";
+import AnalyzeTime from "../payment_analysis/AnalyzeTime";
 
 
 /**
@@ -65,6 +66,7 @@ const PaymentManipulation = () => {
 
     const amount_stats: JSX.Element = <AnalyzeAmount payments={payments} />;
     const date_stats: JSX.Element = <AnalyzeDate payments={payments} />;
+    const time_stats: JSX.Element = <AnalyzeTime payments={payments} />;
 
 
     // run only once
@@ -150,7 +152,15 @@ const PaymentManipulation = () => {
         }
     }
 
-
+    // called from PaymentTableHeader when time is clicked
+    const handle_click_time = () => {
+        if (stats_element === StatsElements.Time){
+            set_stats_element(StatsElements.None);
+        }
+        else{
+            set_stats_element(StatsElements.Time);
+        }
+    }
 
 
     return (
@@ -168,6 +178,7 @@ const PaymentManipulation = () => {
                     <PaymentTableHeader 
                         handle_click_amount={handle_click_amount}
                         handle_click_date={handle_click_date}
+                        handle_click_time={handle_click_time}
                     />
                     
                     {/* display each payment as SinglePayment */}
@@ -185,6 +196,8 @@ const PaymentManipulation = () => {
             {stats_element === StatsElements.Amount ? amount_stats : null}
             {/* check if date */}
             {stats_element === StatsElements.Date ? date_stats : null}
+            {/* check if time */}
+            {stats_element === StatsElements.Time ? time_stats : null}
 
             {/* TODO check other columns, then display stats */}
         </div>

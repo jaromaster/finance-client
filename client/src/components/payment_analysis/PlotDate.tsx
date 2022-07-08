@@ -40,7 +40,7 @@ const PlotDate = (props: PropsInterface) => {
         datasets: [
             {
                 type: "line" as const,
-                label: "Payments per Date (line)",
+                label: "Payments per Day (line)",
                 data: counts,
                 borderColor: line_color,
                 borderWidth: 3,
@@ -48,11 +48,41 @@ const PlotDate = (props: PropsInterface) => {
             },
             {
                 type: "bar" as const,
-                label: "Payments per Date (bar)",
+                label: "Payments per Day (bar)",
                 data: counts,
                 backgroundColor: bar_color,
             }
         ]
+    }
+
+    // options 
+    const options = {
+        scales: {
+            x: {
+                ticks: {
+                    stepSize: 1
+                },
+                title: {
+                    display: true,
+                    text: "Date",
+                    font: {
+                        size: 14
+                    }
+                }
+            },
+            y: {
+                ticks: {
+                    stepSize: 1
+                },
+                title: {
+                    display: true,
+                    text: "Payments",
+                    font: {
+                        size: 14
+                    }
+                }
+            }
+        }
     }
 
     // init plotting
@@ -70,7 +100,7 @@ const PlotDate = (props: PropsInterface) => {
     return (
         <div style={{marginLeft: "auto", marginRight: "auto"}}>
             {/* combined chart */}
-            <Chart type="line" data={plotting_data}></Chart>
+            <Chart type="line" data={plotting_data} options={options}></Chart>
         </div>
     )
 }

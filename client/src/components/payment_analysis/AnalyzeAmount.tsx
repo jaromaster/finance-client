@@ -37,11 +37,9 @@ const AnalyzeAmount = (props: PropsInterface) => {
     // get range
     const range: number = Math.abs(min - max);
 
-
-
     return (
         <div>
-            <h3>Amount Stats</h3>
+            <h2>Amount Stats</h2>
             {/* content div with 2 columns (table and chart) */}
             <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <table>

@@ -33,8 +33,6 @@ const PlotDate = (props: PropsInterface) => {
     const bar_color: string = "blue";
     const line_color: string = "red";
 
-    console.log(dates)
-
 
     // plotting data (datasets for chart.js)
     const plotting_data: ChartData = {
@@ -42,7 +40,7 @@ const PlotDate = (props: PropsInterface) => {
         datasets: [
             {
                 type: "line" as const,
-                label: "Dates (line)",
+                label: "Payments per Date (line)",
                 data: counts,
                 borderColor: line_color,
                 borderWidth: 3,
@@ -50,7 +48,7 @@ const PlotDate = (props: PropsInterface) => {
             },
             {
                 type: "bar" as const,
-                label: "Dates (bar)",
+                label: "Payments per Date (bar)",
                 data: counts,
                 backgroundColor: bar_color,
             }

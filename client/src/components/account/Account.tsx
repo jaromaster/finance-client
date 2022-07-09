@@ -1,5 +1,6 @@
 import React from "react";
 import Collapse from "./Collapse";
+import CurrencySettings from "./CurrencySettings";
 import DeleteUser from "./DeleteUser";
 import Login from "./Login";
 import Logout from "./Logout";
@@ -30,17 +31,17 @@ const Account = () => {
                 <h3>Logged in as {username}</h3>
             }
 
+            {/* handle login / switch account (only if logged in) */}
+            <Collapse title={login_switch_acount}>
+                <Login />
+            </Collapse>
+
             {/* handle sign up, only shown when logged out */}
             {username.length === 0 &&
                 <Collapse title="Sign up"> 
                     <Signup />
                 </Collapse>
             }
-
-            {/* handle login / switch account (only if logged in) */}
-            <Collapse title={login_switch_acount}>
-                <Login />
-            </Collapse>
 
             {/* handle logout, only shown when logged in */}
             {username.length > 0 &&
@@ -53,6 +54,13 @@ const Account = () => {
             <Collapse title="Server Settings">
                 <ServerSettings />
             </Collapse>
+
+            {/* currency settings */}
+            {username.length > 0 &&
+                <Collapse title="Currency Settings">
+                    <CurrencySettings />
+                </Collapse>
+            }
 
             {/* handle user deletion, only shown when logged in */}
             {username.length > 0 &&

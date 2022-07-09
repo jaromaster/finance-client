@@ -21,7 +21,7 @@ const Logout = () => {
 
 
     return (
-        <div className="Logout">
+        <div className="Logout" style={{margin: "10px"}}>
             <h3>You are logged in as {username}. Do you want to log out?</h3>
             <button onClick={handle_logout}>Logout</button>
         </div>

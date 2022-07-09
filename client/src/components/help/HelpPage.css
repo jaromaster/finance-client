@@ -1,0 +1,12 @@
+/* style div */
+/* .Help {
+
+} */
+
+/* style text */
+.Help-Text {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: normal;
+}

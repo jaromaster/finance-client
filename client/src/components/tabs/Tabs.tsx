@@ -8,6 +8,7 @@ const Tabs = () => {
     return (
         <div className="Tabs">
             <button className="Tablink" onClick={(event) => window.location.href = "/payments"}>My Payments</button>
+            <button className="Tablink" onClick={(event) => window.location.href = "/help"}>Help</button>
             <button className="Account-Tablink" onClick={(event) => window.location.href = "/account"}>Account</button>
         </div>
     )

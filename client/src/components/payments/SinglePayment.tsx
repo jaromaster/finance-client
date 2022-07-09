@@ -9,6 +9,7 @@ import "./SinglePayment.css";
 interface SinglePaymentProps {
     payment: PaymentInterface
     delete_hook: Function
+    currency: string
 }
 
 
@@ -20,8 +21,7 @@ const SinglePayment = (props: SinglePaymentProps) => {
     // get payment from props
     const payment: PaymentInterface = props.payment;
 
-    // TODO: set currency in Account->Currency, then store in localStorage
-    const CURRENCY: string = "€";
+    const CURRENCY: string = props.currency;
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PATH: string = "delpayments";

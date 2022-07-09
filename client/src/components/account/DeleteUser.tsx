@@ -46,6 +46,7 @@ const DeleteUser = () => {
         .then(res => {
             // delete data from storage
             sessionStorage.clear();
+            localStorage.removeItem("currency"); // remove currency
 
             // go to welcome page
             window.location.href = "/welcome";

@@ -23,7 +23,6 @@ enum StatsElements {
 }
 
 
-
 /**
  * PaymentManipulation allows operations on payments: get, delete (add might be added in future)
  */
@@ -31,7 +30,8 @@ const PaymentManipulation = () => {
     const UNSET_IP: string = ""; // used to check if ip was not set
     const UNSET_PORT: number = -1; // used to check if port was not set
     const PROTOCOL: string = "http";
-    const PATH: string = "payments"
+    const PATH: string = "payments";
+    const CURRENCY: string = localStorage.getItem("currency") as string;
 
 
     // store payments as array 
@@ -194,7 +194,7 @@ const PaymentManipulation = () => {
                     
                     {/* display each payment as SinglePayment */}
                     {
-                        payments.map((val, idx) => <SinglePayment key={idx} payment={val} delete_hook={delete_hook}/>)
+                        payments.map((val, idx) => <SinglePayment key={idx} payment={val} delete_hook={delete_hook} currency={CURRENCY}/>)
                     }
 
                     {/* add payment */}
@@ -202,7 +202,7 @@ const PaymentManipulation = () => {
                 </tbody>
             </table>
 
-            {/* show payment analytics */}
+            {/* show payment analytics (only when column headers clicked) */}
             {/* check if amount */}
             {stats_element === StatsElements.Amount ? amount_stats : null}
             {/* check if date */}
@@ -211,8 +211,6 @@ const PaymentManipulation = () => {
             {stats_element === StatsElements.Time ? time_stats : null}
             {/* check if category */}
             {stats_element === StatsElements.Category ? category_stats : null}
-
-            {/* TODO check other columns, then display stats */}
         </div>
     )
 }

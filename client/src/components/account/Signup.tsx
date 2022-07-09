@@ -95,6 +95,7 @@ const Signup = () => {
             const token = res.data; // get token
             sessionStorage.setItem("token", token); // success, store jwt in sessionStorage
             sessionStorage.setItem("username", username); // store username to display later
+            localStorage.setItem("currency", "$"); // set currency to dollar (default value)
 
             // go to welcome page
             window.location.href = "/welcome";

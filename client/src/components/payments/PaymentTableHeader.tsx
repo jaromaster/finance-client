@@ -20,10 +20,10 @@ interface PropsInterface {
 const PaymentTableHeader = (props: PropsInterface) => {
     return (
         <tr className="PaymentTableHeader">
-            <th className="PaymentTableHeader" onClick={e => props.handle_click_amount()}>Amount</th>
-            <th className="PaymentTableHeader" onClick={e => props.handle_click_date()}>Date</th>
-            <th className="PaymentTableHeader" onClick={e => props.handle_click_time()}>Time</th>
-            <th className="PaymentTableHeader" onClick={e => props.handle_click_category()}>Category</th>
+            <th className="PaymentTableHeader" onClick={e => props.handle_click_amount()} title="view stats">Amount</th>
+            <th className="PaymentTableHeader" onClick={e => props.handle_click_date()} title="view stats">Date</th>
+            <th className="PaymentTableHeader" onClick={e => props.handle_click_time()} title="view stats">Time</th>
+            <th className="PaymentTableHeader" onClick={e => props.handle_click_category()} title="view stats">Category</th>
             <th className="PaymentTableHeader">Text</th>
         </tr>
     )

@@ -1,5 +1,5 @@
 import React from "react";
-import { PaymentInterface } from "../../helper_funcs/helper";
+import { create_count_map, PaymentInterface } from "../../helper_funcs/helper";
 import PlotTime from "./PlotTime";
 
 
@@ -8,30 +8,6 @@ import PlotTime from "./PlotTime";
  */
 interface PropsInterface {
     payments: PaymentInterface[]
-}
-
-
-/**
- * create_count_map takes list and returns map containing the counts of each item in list
- * @param list
- * @returns map
- */
-const create_count_map = (list: string[]): Map<string, number> => {
-    const count_map = new Map<string, number>();
-    list.forEach((val) => {
-        // in map
-        if(count_map.has(val)) {
-            let count = count_map.get(val) as number;
-
-            count_map.set(val, count + 1); // increase by one
-        }
-        // not in map
-        else {
-            count_map.set(val, 1); // add to map
-        }
-    });
-
-    return count_map;
 }
 
 

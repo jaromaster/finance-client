@@ -91,3 +91,27 @@ export const get_payments = async (url: string, token: string): Promise<PaymentI
         return "Network error, server not found";
     }
 }
+
+
+/**
+ * create_count_map takes list and returns map containing the counts of each item in list
+ * @param list
+ * @returns map
+ */
+export const create_count_map = (list: string[]): Map<string, number> => {
+    const count_map = new Map<string, number>();
+    list.forEach((val) => {
+        // in map
+        if(count_map.has(val)) {
+            let count = count_map.get(val) as number;
+
+            count_map.set(val, count + 1); // increase by one
+        }
+        // not in map
+        else {
+            count_map.set(val, 1); // add to map
+        }
+    });
+
+    return count_map;
+}

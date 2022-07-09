@@ -8,8 +8,6 @@ import {
     Title,
     Tooltip,
     Legend,
-    PointElement,
-    LineElement,
     ChartData
 } from 'chart.js';
 
@@ -18,37 +16,29 @@ import {
  * PropsInterface defines props
  */
 interface PropsInterface {
-    dates: string[]
+    categories: string[]
     counts: number[]
 }
 
 
 /**
- * PlotDate plots date column as histogram
+ * PlotCategory plots the category column
+ * @param props
  */
-const PlotDate = (props: PropsInterface) => {
-    const dates: string[] = props.dates; // get dates from props
+const PlotCategory = (props: PropsInterface) => {
+    const categories: string[] = props.categories; // get categories (unique) for labels
     const counts: number[] = props.counts; // get counts
 
     const bar_color: string = "blue";
-    const line_color: string = "red";
 
 
     // plotting data (datasets for chart.js)
     const plotting_data: ChartData = {
-        labels: dates,
+        labels: categories,
         datasets: [
             {
-                type: "line" as const,
-                label: "Payments per Day (line)",
-                data: counts,
-                borderColor: line_color,
-                borderWidth: 3,
-                tension: 0.2 // make line appear "round"
-            },
-            {
                 type: "bar" as const,
-                label: "Payments per Day (bar)",
+                label: "Category",
                 data: counts,
                 backgroundColor: bar_color,
             }
@@ -59,12 +49,9 @@ const PlotDate = (props: PropsInterface) => {
     const options = {
         scales: {
             x: {
-                ticks: {
-                    stepSize: 1
-                },
                 title: {
                     display: true,
-                    text: "Date",
+                    text: "Category",
                     font: {
                         size: 14
                     }
@@ -90,19 +77,18 @@ const PlotDate = (props: PropsInterface) => {
         CategoryScale,
         LinearScale,
         BarElement,
-        PointElement,
-        LineElement,
         Title,
         Tooltip,
         Legend
     );
 
+
     return (
         <div style={{marginLeft: "auto", marginRight: "auto"}}>
             {/* combined chart */}
-            <Chart type="line" data={plotting_data} options={options}></Chart>
+            <Chart type="line" data={plotting_data} options={options} />
         </div>
     )
 }
 
-export default PlotDate;
+export default PlotCategory;

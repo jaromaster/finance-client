@@ -1,4 +1,5 @@
 import React from "react";
+import "./PaymentAddRow.css";
 
 /**
  * PaymentAddRow is a table row with a button for adding new payments
@@ -12,10 +13,10 @@ const PaymentAddRow = () => {
 
 
     return (
-        <tr>
-            <td colSpan={4}></td>
-            <th style={{border: "1px solid lightblue", paddingLeft: "8px", paddingRight: "8px"}}><p>Add new Payment</p></th>
-            <th style={{cursor: "pointer"}} onClick={handle_click}><p>+</p></th>
+        <tr >
+            <td colSpan={4} className="PaymentAddRows"></td>
+            <th className="PaymentAddRows"><p>Add new Payment</p></th>
+            <th className="PaymentAddRows" style={{cursor: "pointer"}} onClick={handle_click}><p>+</p></th>
         </tr>
     )
 }

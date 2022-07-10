@@ -1,7 +1,19 @@
 /* style th */
 th.PaymentTableHeader {
-    border: 1px solid lightblue;
     padding-left: 8px;
     padding-right: 8px;
     cursor: pointer;
+    box-shadow: inset 1px 1px lightblue, 1px 1px lightblue, 1px 1px lightblue, 1px 1px lightblue;
+
+    /* stick to top of div */
+    position: sticky;
+    top: 0;
+}
+
+
+/* style header (tr) */
+.PaymentTableHeader {
+    background-color: white;
+    position: sticky;
+    top: 0;
 }

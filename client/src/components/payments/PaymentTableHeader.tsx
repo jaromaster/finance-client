@@ -10,7 +10,6 @@ interface PropsInterface {
     handle_click_date: Function
     handle_click_time: Function
     handle_click_category: Function
-    // handle_click_text: Function
 }
 
 
@@ -24,7 +23,8 @@ const PaymentTableHeader = (props: PropsInterface) => {
             <th className="PaymentTableHeader" onClick={e => props.handle_click_date()} title="view stats">Date</th>
             <th className="PaymentTableHeader" onClick={e => props.handle_click_time()} title="view stats">Time</th>
             <th className="PaymentTableHeader" onClick={e => props.handle_click_category()} title="view stats">Category</th>
-            <th className="PaymentTableHeader">Text</th>
+            <th className="PaymentTableHeader" style={{cursor: "default"}}>Text</th>
+            <th className="PaymentTableHeader"></th>
         </tr>
     )
 }

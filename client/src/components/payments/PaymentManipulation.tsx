@@ -175,32 +175,37 @@ const PaymentManipulation = () => {
 
     return (
         <div>
-            <table className="Payment-Man-Table">
-                <colgroup>
-                    <col className="Payment-Man-Column"></col>
-                    <col className="Payment-Man-Column"></col>
-                    <col className="Payment-Man-Column"></col>
-                    <col className="Payment-Man-Column"></col>
-                    <col className="Payment-Man-Column"></col>
-                </colgroup>
-                <tbody>
-                    {/* table header (column names) */}
-                    <PaymentTableHeader 
-                        handle_click_amount={handle_click_amount}
-                        handle_click_date={handle_click_date}
-                        handle_click_time={handle_click_time}
-                        handle_click_category={handle_click_category}
-                    />
-                    
-                    {/* display each payment as SinglePayment */}
-                    {
-                        payments.map((val, idx) => <SinglePayment key={idx} payment={val} delete_hook={delete_hook} currency={CURRENCY}/>)
-                    }
-
-                    {/* add payment */}
-                    <PaymentAddRow />
-                </tbody>
-            </table>
+            <div className="Payments-Scroll-Div">
+                <table className="Payment-Man-Table">
+                    <colgroup>
+                        <col className="Payment-Man-Column"></col>
+                        <col className="Payment-Man-Column"></col>
+                        <col className="Payment-Man-Column"></col>
+                        <col className="Payment-Man-Column"></col>
+                        <col className="Payment-Man-Column"></col>
+                    </colgroup>
+                    <thead>
+                        {/* table header (column names) */}
+                        <PaymentTableHeader 
+                            handle_click_amount={handle_click_amount}
+                            handle_click_date={handle_click_date}
+                            handle_click_time={handle_click_time}
+                            handle_click_category={handle_click_category}
+                        />
+                    </thead>
+                    <tbody>
+                        
+                        {/* display each payment as SinglePayment */}
+                        {
+                            payments.map((val, idx) => <SinglePayment key={idx} payment={val} delete_hook={delete_hook} currency={CURRENCY}/>)
+                        } 
+                    </tbody>
+                    <tfoot>
+                        {/* add payment */}
+                        <PaymentAddRow />
+                    </tfoot>
+                </table>
+            </div>
 
             {/* show payment analytics (only when column headers clicked) */}
             {/* check if amount */}

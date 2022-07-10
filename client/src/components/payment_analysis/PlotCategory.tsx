@@ -47,6 +47,7 @@ const PlotCategory = (props: PropsInterface) => {
 
     // options 
     const options = {
+        responsive: true,
         scales: {
             x: {
                 title: {
@@ -86,7 +87,7 @@ const PlotCategory = (props: PropsInterface) => {
     return (
         <div style={{marginLeft: "auto", marginRight: "auto"}}>
             {/* combined chart */}
-            <Chart type="line" data={plotting_data} options={options} />
+            <Chart type="bar" data={plotting_data} options={options} />
         </div>
     )
 }

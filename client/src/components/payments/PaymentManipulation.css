@@ -3,9 +3,12 @@
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    border: 1px solid lightblue;
     border-collapse: collapse;
-
-    /* TODO make scrollable */
 }
 
+
+/* style div to make scrollable */
+.Payments-Scroll-Div {
+    overflow-y: auto;
+    height: 65vh;
+}

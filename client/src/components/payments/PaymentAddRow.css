@@ -1,6 +1,11 @@
-/* style table cell */
-.SinglePayment-Cell {
+/* style cells */
+.PaymentAddRows {
     box-shadow: inset 1px -1px lightblue, 1px -1px lightblue, 1px -1px lightblue, 1px -1px lightblue;
+    background-color: white;
     padding-left: 8px;
     padding-right: 8px;
+
+    /* stick to bottom of div */
+    position: sticky;
+    bottom: 0;
 }

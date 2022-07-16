@@ -14,5 +14,8 @@
 - ReactJS
 - ChartJS
 
+## Examples
+- see [PREVIEW.md](./preview/PREVIEW.md)
+
 ## Related
 - [Finance Server](https://github.com/jaromaster/finance-server)

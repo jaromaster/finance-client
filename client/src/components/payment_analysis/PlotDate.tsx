@@ -1,17 +1,6 @@
 import React from "react";
 import { Chart } from "react-chartjs-2";
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    PointElement,
-    LineElement,
-    ChartData
-} from 'chart.js';
+import { ChartData } from 'chart.js';
 
 
 /**
@@ -84,18 +73,6 @@ const PlotDate = (props: PropsInterface) => {
             }
         }
     }
-
-    // init plotting
-    ChartJS.register(
-        CategoryScale,
-        LinearScale,
-        BarElement,
-        PointElement,
-        LineElement,
-        Title,
-        Tooltip,
-        Legend
-    );
 
     return (
         <div style={{marginLeft: "auto", marginRight: "auto"}}>

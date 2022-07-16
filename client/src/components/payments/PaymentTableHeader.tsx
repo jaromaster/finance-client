@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import {
+    Chart as ChartJS,
+    registerables,
+} from 'chart.js';
 import "./PaymentTableHeader.css";
 
 
@@ -17,6 +21,16 @@ interface PropsInterface {
  * PaymentTableHeader displays column names
  */
 const PaymentTableHeader = (props: PropsInterface) => {
+
+    // called once
+    useEffect(()=> {
+        // init plotting
+        ChartJS.register(
+            ...registerables
+        );
+    }, [])
+
+
     return (
         <tr className="PaymentTableHeader">
             <th className="PaymentTableHeader" onClick={e => props.handle_click_amount()} title="view stats">Amount</th>
